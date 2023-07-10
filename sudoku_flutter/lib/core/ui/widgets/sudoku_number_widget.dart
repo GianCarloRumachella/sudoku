@@ -6,6 +6,8 @@ class SudokuNumberWidget extends StatefulWidget {
   final int rowId;
   final int colId;
   final int quadrantId;
+  final int number;
+
   const SudokuNumberWidget({
     super.key,
     this.leftEndQuadrant = false,
@@ -13,6 +15,7 @@ class SudokuNumberWidget extends StatefulWidget {
     required this.rowId,
     required this.colId,
     required this.quadrantId,
+    required this.number,
   });
 
   @override
@@ -20,6 +23,8 @@ class SudokuNumberWidget extends StatefulWidget {
 }
 
 class _SudokuNumberWidgetState extends State<SudokuNumberWidget> {
+  bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return ClipRect(
@@ -31,11 +36,18 @@ class _SudokuNumberWidgetState extends State<SudokuNumberWidget> {
             top: widget.topEndQuadrant ? const BorderSide(color: Colors.black, width: 2) : const BorderSide(color: Colors.grey),
           ),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(1),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              isSelected = !isSelected;
+            });
+          },
           child: Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: const Center(child: Text('1')),
+            padding: const EdgeInsets.all(1),
+            child: Container(
+              decoration: BoxDecoration(color: isSelected ? Colors.cyan : Colors.white),
+              child: Center(child: Text(widget.number.toString())),
+            ),
           ),
         ),
       ),
