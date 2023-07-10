@@ -6,7 +6,8 @@ class SudokuNumberWidget extends StatefulWidget {
   final int rowId;
   final int colId;
   final int quadrantId;
-  final int number;
+  final String number;
+  final bool isLocked;
 
   const SudokuNumberWidget({
     super.key,
@@ -16,6 +17,7 @@ class SudokuNumberWidget extends StatefulWidget {
     required this.colId,
     required this.quadrantId,
     required this.number,
+    required this.isLocked,
   });
 
   @override
@@ -37,15 +39,23 @@ class _SudokuNumberWidgetState extends State<SudokuNumberWidget> {
           ),
         ),
         child: GestureDetector(
-          onTap: () {
-            setState(() {
-              isSelected = !isSelected;
-            });
-          },
+          onTap: !widget.isLocked
+              ? () {
+                  setState(() {
+                    isSelected = !isSelected;
+                  });
+                }
+              : null,
           child: Container(
             padding: const EdgeInsets.all(1),
             child: Container(
-              decoration: BoxDecoration(color: isSelected ? Colors.cyan : Colors.white),
+              decoration: BoxDecoration(
+                color: widget.isLocked
+                    ? Colors.grey[300]
+                    : isSelected
+                        ? Colors.cyan
+                        : Colors.white,
+              ),
               child: Center(child: Text(widget.number.toString())),
             ),
           ),

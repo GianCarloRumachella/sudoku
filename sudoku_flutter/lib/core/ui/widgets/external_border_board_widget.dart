@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sudoku_flutter/core/ui/widgets/sudoku_number_widget.dart';
 
 class ExternalBorderBoardWidget extends StatefulWidget {
+  final List<List<int>> filledGrid;
   const ExternalBorderBoardWidget({
     super.key,
+    required this.filledGrid,
   });
 
   @override
@@ -15,7 +17,8 @@ class _ExternalBorderBoardWidgetState extends State<ExternalBorderBoardWidget> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 0.5;
     double width = MediaQuery.of(context).size.width * 0.9;
-    int itemCount = 81;
+    List<int> flatGrid = widget.filledGrid.expand((element) => element).toList();
+
     return SizedBox(
       height: height,
       width: width,
@@ -35,7 +38,7 @@ class _ExternalBorderBoardWidgetState extends State<ExternalBorderBoardWidget> {
                       maxCrossAxisExtent: width / 9,
                       mainAxisExtent: (height / 9) * .989,
                     ),
-                    itemCount: itemCount,
+                    itemCount: flatGrid.length,
                     itemBuilder: (context, index) {
                       //TODO mover para uma função de setup
                       double result = index / 3;
@@ -86,7 +89,8 @@ class _ExternalBorderBoardWidgetState extends State<ExternalBorderBoardWidget> {
                         colId: col,
                         quadrantId: quadrantId,
                         rowId: rows.truncate(),
-                        number: quadrantId + col + rows.truncate(),
+                        number: flatGrid[index] == 0 ? '' : flatGrid[index].toString(),
+                        isLocked: flatGrid[index] != 0 ? true : false,
                       );
                     },
                   ),
