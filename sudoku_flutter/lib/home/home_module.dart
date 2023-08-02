@@ -6,7 +6,7 @@ import 'package:sudoku_flutter/home/presentation/pages/home_page.dart';
 class HomeModule extends Module {
   @override
   List<Bind<Object>> get binds => [
-        Bind.factory<HomeController>((i) => HomeController()),
+        Bind.lazySingleton<HomeController>((i) => HomeController()),
       ];
 
   @override

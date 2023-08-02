@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:sudoku_flutter/home/presentation/controllers/home_controller.dart';
 
+// ignore: must_be_immutable
 class SudokuNumberWidget extends StatefulWidget {
   final bool leftEndQuadrant;
   final bool topEndQuadrant;
@@ -8,8 +11,10 @@ class SudokuNumberWidget extends StatefulWidget {
   final int quadrantId;
   final String number;
   final bool isLocked;
+  bool? isSelected;
+  int index;
 
-  const SudokuNumberWidget({
+  SudokuNumberWidget({
     super.key,
     this.leftEndQuadrant = false,
     this.topEndQuadrant = false,
@@ -18,6 +23,8 @@ class SudokuNumberWidget extends StatefulWidget {
     required this.quadrantId,
     required this.number,
     required this.isLocked,
+    this.isSelected,
+    required this.index,
   });
 
   @override
@@ -26,6 +33,12 @@ class SudokuNumberWidget extends StatefulWidget {
 
 class _SudokuNumberWidgetState extends State<SudokuNumberWidget> {
   bool isSelected = false;
+  @override
+  void initState() {
+    isSelected = widget.isSelected ?? false;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +51,17 @@ class _SudokuNumberWidgetState extends State<SudokuNumberWidget> {
             top: widget.topEndQuadrant ? const BorderSide(color: Colors.black, width: 2) : const BorderSide(color: Colors.grey),
           ),
         ),
-        child: GestureDetector(
-          onTap: !widget.isLocked
-              ? () {
-                  setState(() {
-                    isSelected = !isSelected;
-                  });
-                }
-              : null,
+        child: Container(
+          padding: const EdgeInsets.all(1),
           child: Container(
-            padding: const EdgeInsets.all(1),
-            child: Container(
-              decoration: BoxDecoration(
-                color: widget.isLocked
-                    ? Colors.grey[300]
-                    : isSelected
-                        ? Colors.cyan
-                        : Colors.white,
-              ),
-              child: Center(child: Text(widget.number.toString())),
+            decoration: BoxDecoration(
+              color: widget.isLocked
+                  ? Colors.grey[300]
+                  : widget.index == -1
+                      ? Colors.amber
+                      : Colors.cyan,
             ),
+            child: Center(child: Text(widget.number.toString())),
           ),
         ),
       ),
